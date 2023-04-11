@@ -1,19 +1,26 @@
-const express = require('express')
-const router = express.Router()
-const getAllContacts = require("../../controllers/getAllContacts");
-const changeContact = require("../../controllers/changeContact");
-const getById = require("../../controllers/getById");
-const deleteContact = require("../../controllers/deleteContact");
-const postContact = require("../../controllers/postСontact");               
+const router = require("express").Router();
+const {
+	getAllContacts,
+	getById,
+	postContact,
+	deleteContact,
+	changeContact,
+} = require("../../controllers");
+
+
+const addSchemaValidator = require("../../middlewars/addSchemaValidator");
+
+const schemaValidator = require("../../middlewars/SchemaValidator");
+const { addSchema, changeSchema } = require("../../schema/contactsSchema");            
 
 router.get("/", getAllContacts);
 
 router.get("/:contactId", getById);
 
-router.post("/", postContact);
+router.post("/", addSchemaValidator(addSchema), postContact);
+
+router.put("/:contactId", schemaValidator(changeSchema), changeContact);
 
 router.delete("/:contactId", deleteContact);
-
-router.put("/:contactId", changeContact);
 
 module.exports = router

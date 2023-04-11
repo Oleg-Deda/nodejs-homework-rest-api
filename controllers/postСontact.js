@@ -1,6 +1,6 @@
 const { addContact } = require("../models/contacts");
 const { validator } = require("../middlewars/validator");
-const objectFieldsChecker = require("../middlewars/objectFieldsValidator");
+const objectFieldsChecker = require("../helpers/objectFieldsChecker");
 const postContact = async (req, res, next) => {
 	if (validator(req.body).error) {
 		const alertMessage = objectFieldsChecker(req.body);

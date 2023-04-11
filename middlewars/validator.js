@@ -1,23 +1,14 @@
-const Joi = require("joi");
+// const httpError = require("../helpers/httpError");
 
-const validator = (data) => {
-	const schema = Joi.object({
-		name: Joi.string().required(),
-		email: Joi.string().required(),
-		phone: Joi.string().required(),
-	});
-	return schema.validate(data);
-};
+// const bodyValidator = (schema) => {
+// 	const valid = (req, res, next) => {
+// 		const { error } = schema.validate(req.body);
+// 		if (error) {
+// 			next(httpError(400, error.message));
+// 		}
+// 		next();
+// 	};
+// 	return valid;
+// };
 
-const emptyObject = (data) => {
-	const schema = Joi.object({
-		name: Joi.string(),
-		email: Joi.string(),
-		phone: Joi.string(),
-	}).min(1);
-	console.log(schema.validate(data));
-
-	return schema.validate(data);
-};
-
-module.exports = { emptyObject, validator };
+// module.exports = bodyValidator;
