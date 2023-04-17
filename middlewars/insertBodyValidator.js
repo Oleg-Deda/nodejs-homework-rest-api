@@ -1,10 +1,10 @@
 const statusError = require("../helpers/statusError");
-const objectFieldsChecker = require("../helpers/objectFieldsChecker");
-const addSchemaValidator = (schema) => {
+const { objectFieldsValidator } = require("../helpers");
+const insertBodyValidator = (schema) => {
 	const valid = (req, res, next) => {
 		const { error } = schema.validate(req.body);
 		if (error) {
-			const alertMessage = objectFieldsChecker(req.body);
+			const alertMessage = objectFieldsValidator(req.body);
 			next(statusError(400, alertMessage));
 		}
 		next();
@@ -12,4 +12,4 @@ const addSchemaValidator = (schema) => {
 	return valid;
 };
 
-module.exports = addSchemaValidator;
+module.exports = insertBodyValidator;

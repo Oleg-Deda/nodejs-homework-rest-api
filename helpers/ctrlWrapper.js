@@ -1,4 +1,4 @@
-const controllerWrp = (controller) => {
+const ctrlWrapper = (controller) => {
 	const func = async (req, res, next) => {
 		try {
 			await controller(req, res, next);
@@ -10,4 +10,4 @@ const controllerWrp = (controller) => {
 	return func;
 };
 
-module.exports = controllerWrp;
+module.exports = ctrlWrapper;
