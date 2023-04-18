@@ -1,7 +1,7 @@
 const { isValidObjectId } = require("mongoose");
 
 const statusError = require("../helpers/statusError");
-const validObjectId = (req, res, next) => {
+const isValidId  = (req, res, next) => {
 	const { contactId } = req.params;
 	if (!isValidObjectId(contactId)) {
 		next(statusError(404, "Not found"));
@@ -9,4 +9,4 @@ const validObjectId = (req, res, next) => {
 	next();
 };
 
-module.exports = validObjectId;
+module.exports = isValidId;

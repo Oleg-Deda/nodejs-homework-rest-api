@@ -1,5 +1,6 @@
 const { ctrlWrapper } = require("../helpers");
 const { Contact } = require("../models/contactSchema");
+const { statusError } = require("../helpers/index");
 
 const getAllContacts = async (req, res) => {
 	const contacts = await Contact.find();
@@ -27,8 +28,10 @@ const addContact = async (req, res) => {
 
 const deleteContact = async (req, res) => {
 	const { contactId } = req.params;
-	await Contact.findByIdAndRemove(contactId);
-
+	const result = await Contact.findByIdAndDelete(contactId);
+	if (!result) {
+		throw statusError(404, `Contact with ${contactId} not found`);
+	  }
 	res.status(200).json({ message: "Contact successfully deleted"})
 };
 

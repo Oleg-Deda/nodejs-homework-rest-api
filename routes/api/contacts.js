@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-	validObjectId,
+	isValidId,
 	bodyValidator,
 	insertBodyValidator,
 	updateStatusFavorite,
@@ -19,19 +19,19 @@ const { schemas } = require("../../models/contactSchema");
 
 router.get("/", getAllContacts);
 
-router.get("/:contactId", validObjectId, getById);
+router.get("/:contactId", isValidId, getById);
 
 router.post("/", insertBodyValidator(schemas.addSchema), addContact);
 
-router.put("/:contactId", validObjectId, bodyValidator(schemas.changeSchema), changeContact);
+router.put("/:contactId", isValidId, bodyValidator(schemas.changeSchema), changeContact);
 
 router.patch(
 	"/:contactId/favorite",
-	validObjectId,
+	isValidId,
 	updateStatusFavorite(schemas.changeFavoriteSchema),
 	updateContactStatus,
 );
 
-router.delete("/:contactId", validObjectId, deleteContact);
+router.delete("/:contactId", isValidId, deleteContact);
 
 module.exports = router;
