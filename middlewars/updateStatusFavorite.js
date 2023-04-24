@@ -1,9 +1,9 @@
 const statusError = require("../helpers/statusError");
 
-const updateStatusFavorite = (schema) => {
+const updateStatus = (schema , fieldName) => {
 	const valid = (req, res, next) => {
 		if (!Object.keys(req.body).length) {
-			next(statusError(400, "missing field favorite"));
+			next(statusError(400, `missing field ${fieldName}`));
 		}
 		const { error } = schema.validate(req.body);
 		if (error) {
@@ -14,4 +14,4 @@ const updateStatusFavorite = (schema) => {
 	return valid;
 };
 
-module.exports = updateStatusFavorite;
+module.exports = updateStatus;

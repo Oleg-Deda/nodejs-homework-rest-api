@@ -3,9 +3,23 @@ const { Contact } = require("../models/contactSchema");
 const { statusError } = require("../helpers/index");
 
 const getAllContacts = async (req, res) => {
-	const contacts = await Contact.find();
-	res.json(contacts);
+	
+	const { _id: owner } = req.user;
+	const { favorite } = req.query;
+		if (!favorite) {
+		const contacts = await Contact.find({ owner }, "-createdAt -updatedAt");
+		res.json(contacts);
+	}
+	if (favorite) {
+		const boolValue = favorite === "true";
+		const contacts = await Contact.find(
+			{ owner, favorite: { $eq: boolValue } },
+			"-createdAt -updatedAt"
+		);
+		res.json(contacts);
+	}
 };
+
 
 const getById = async (req, res) => {
 	const { contactId } = req.params;
@@ -32,7 +46,9 @@ const changeContact = async (req, res) => {
 
 
 const addContact = async (req, res) => {
-	const contact = await Contact.create(req.body);
+	// const contact = await Contact.create(req.body);
+	const { _id: owner } = req.user;
+	const contact = await Contact.create({ ...req.body, owner });
 	res.status(201).json(contact);
 };
 
@@ -57,10 +73,6 @@ const updateContactStatus = async (req, res) => {
 	  }
 	res.status(200).json(result);
 };
-
-
-
-
 
 module.exports = {
 	getAllContacts: ctrlWrapper(getAllContacts),

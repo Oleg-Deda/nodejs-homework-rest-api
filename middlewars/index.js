@@ -1,7 +1,13 @@
-
 const insertBodyValidator = require("./insertBodyValidator");
 const bodyValidator = require("./bodyValidator");
 const isValidId = require("./isValidId");
-const updateStatusFavorite = require("./updateStatusFavorite");
+const updateStatus = require("./updateStatusFavorite");
+const authenticate = require("./authenticate");
 
-module.exports = { updateStatusFavorite, insertBodyValidator, bodyValidator, isValidId };
+module.exports = {
+  updateStatus,
+  insertBodyValidator,
+  bodyValidator,
+  isValidId,
+  authenticate,
+};
