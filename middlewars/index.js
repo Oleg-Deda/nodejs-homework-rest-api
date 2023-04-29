@@ -3,6 +3,8 @@ const bodyValidator = require("./bodyValidator");
 const isValidId = require("./isValidId");
 const updateStatus = require("./updateStatusFavorite");
 const authenticate = require("./authenticate");
+const uploadChecker = require("./uploadChecker");
+const upload = require("./upload");
 
 module.exports = {
   updateStatus,
@@ -10,4 +12,6 @@ module.exports = {
   bodyValidator,
   isValidId,
   authenticate,
+  upload,
+  uploadChecker,
 };

@@ -3,6 +3,11 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
+const gravatar = require("gravatar");
+const path = require("path"); 
+const fs = require("fs").promises;
+const { jimpResizer } = require("../helpers");
+const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
 const { JWT_KEY } = process.env;
 
@@ -13,7 +18,9 @@ const createUser = async (req, res) => {
 		throw statusError(409);
 	}
 	const hashPassword = await bcrypt.hash(password, 10);
-	const newUser = await User.create({ ...req.body, password: hashPassword });
+	const avatarURL = gravatar.url(email);
+	const newUser = await User.create({...req.body, password: hashPassword, avatarURL});
+
 	res.status(201).json({
 		user: {
 			email: newUser.email,
@@ -67,10 +74,28 @@ const updateSubscription = async (req, res) => {
 	res.status(200).json(updatedUserSubscription);
 };
 
+const updateAvatar = async (req, res) => {	
+	const { _id } = req.user;
+	const { path: tempUpload,  originalname } = req.file;
+	try {
+		await jimpResizer(tempUpload);
+		const newName = `${_id}_${originalname}`;
+		const distUpload = path.join(avatarsDir, newName);
+
+		await fs.rename(tempUpload, distUpload);
+		const avatarURL = path.join("avatars", newName);
+		await User.findByIdAndUpdate(_id, { avatarURL });
+		res.json({ avatarURL });
+	} catch (error) {
+		await fs.unlink(tempUpload);
+	}
+};
+
 module.exports = {
 	createUser: ctrlWrapper(createUser),
 	userLogin: ctrlWrapper(userLogin),
 	getCurrent: ctrlWrapper(getCurrent),
 	logout: ctrlWrapper(logout),
 	updateSubscription: ctrlWrapper(updateSubscription),
+	updateAvatar: ctrlWrapper(updateAvatar),
 };
