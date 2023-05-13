@@ -24,7 +24,7 @@ router.get("/verify/:verificationToken", ctrl.verifyEmail);
 
 router.post(
   "/verify",
-  updateStatus(schemas.userEmailSchema, "missing required field email"),
+  updateStatus(schemas.userEmailSchema),
   ctrl.resendVerifyEmail
 );
 router.post("/login", bodyValidator(schemas.userLoginSchema), userLogin);
