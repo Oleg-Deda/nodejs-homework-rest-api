@@ -1,9 +1,9 @@
 const statusError = require("../helpers/statusError");
 
-const updateStatus = (schema , fieldName) => {
+const updateStatus = (schema , resMessage) => {
 	const valid = (req, res, next) => {
 		if (!Object.keys(req.body).length) {
-			next(statusError(400, `missing field ${fieldName}`));
+			next(statusError(400, `${resMessage}`));
 		}
 		const { error } = schema.validate(req.body);
 		if (error) {
